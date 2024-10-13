@@ -19,14 +19,22 @@ class WatchlistController extends Controller
         // アニメのタイトルまたはサブタイトルで検索キーワードを取得
         $keyword = $request->keyword;
 
+        // タイトルにキーワードを含むアニメグループIDを取得
+        $animeTitle = Anime::where('title', 'like', "%{$keyword}%")
+            ->pluck('anime_group_id')
+            ->unique();
+
+        // サブタイトルにキーワードを含むアニメグループIDを取得
+        $animeSubTitle = Anime::where('sub_title', 'like', "%{$keyword}%")
+            ->pluck('anime_group_id')
+            ->unique();
+
+        // タイトルとサブタイトルの検索結果をまとめる
+        $animeGroupIds = $animeTitle->merge($animeSubTitle);
+
         // アニメグループとログイン中のユーザーのウォッチリストを取得
         $anime_group_lists = AnimeGroup::with(
             [
-                'animes' => function ($query) use ($keyword) {
-                    // サブタイトルまたはタイトルにキーワードが含まれるアニメを検索
-                    return $query->where('sub_title', 'like', "%{$keyword}%")
-                        ->orWhere('title', 'like', "%{$keyword}%");
-                },
                 'animes.watchlists' => function ($query) {
                     // ログイン中のユーザーのウォッチリストを取得
                     return $query->where('user_id', Auth::user()->id);
@@ -35,12 +43,11 @@ class WatchlistController extends Controller
                 'hiddenLists',
             ]
         )
-            // アニメカウントを取得し、非表示リストに含まれていないアニメグループを降順で表示
-            ->withCount('animes')
-            ->doesntHave('hiddenLists')
-            ->orderBy('created_at', 'desc')
-            // ページネーションの設定（1ページあたり15件）
-            ->paginate(15);
+            ->withCount('animes') // 各アニメグループのアニメ数をカウント
+            ->whereIn('id', $animeGroupIds) // 検索キーワードに一致するアニメグループのみ選択
+            ->doesntHave('hiddenLists') // 非表示リストに含まれないアニメグループのみ表示
+            ->orderBy('created_at', 'desc') // 作成日時の降順で並び替え
+            ->paginate(15); // ページネーションの設定（1ページあたり15件）
 
         return view('watch_lists.index', ['anime_group_lists' => $anime_group_lists]);
     }
