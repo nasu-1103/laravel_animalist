@@ -51,6 +51,7 @@
             </label>
         </div>
 
+        {{-- 会員登録リンクの非表示設定 --}}
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('register'))
                 <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none foucs:ring-offset-2 focus:ring-indigo-500"
