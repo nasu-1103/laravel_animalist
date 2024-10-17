@@ -28,7 +28,7 @@
                                 <label for="note"
                                     class="hidden xl:inline-block xl:ml-2 text-lg font-medium text-red-500 dark:text-white">視聴中の場合、先に時間を入力してから未視聴に変更してください。</label>
                                 <div class="tooltip" data-tip="視聴中の場合、先に時間を入力してから未視聴に変更してください。">
-                                    <textarea name="memo" id="memo" rows="1" cols="12" placeholder="例： 15:10" class="ml-28 rounded-xl"
+                                    <textarea name="memo" id="memo" rows="1" cols="12" placeholder="例：15:10" class="ml-28 rounded-xl"
                                         onchange="setNotes()" data-user_id="{{ Auth::user()->id }}">{{ Auth::user()->notes }}</textarea>
                                 </div>
                             </div>
