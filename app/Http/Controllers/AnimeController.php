@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Anime;
 use App\Models\AnimeGroup;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
-
 
 class AnimeController extends Controller
 {
