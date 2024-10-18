@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Anime;
 use App\Models\AnimeGroup;
 use App\Models\UserHiddenList;
 use Illuminate\Http\Request;
@@ -60,7 +59,7 @@ class AnimeGroupController extends Controller
             $request->search_word . "&sort_season=asc&page=" . $request->page;
         $res = Http::withToken($token)->get($url);
 
-        // アニメのタイトルを取得
+        // Annict APIからアニメのタイトルを取得
         $works = $res->json()['works'];
 
         // Annict APIから総件数を取得
