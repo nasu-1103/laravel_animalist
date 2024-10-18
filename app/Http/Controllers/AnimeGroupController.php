@@ -18,7 +18,7 @@ class AnimeGroupController extends Controller
         $keyword = $request->keyword;
 
         if ($keyword) {
-            // キーワードを含むアニメグループを取得し、ページネーションの設定
+            // キーワードを含むアニメグループを取得し、ページネーションを適応
             $animeGroups = AnimeGroup::where('name', 'like', "%{$keyword}%")->paginate(15);
 
             // 検索結果の総数を取得
@@ -81,7 +81,7 @@ class AnimeGroupController extends Controller
             return back()->withInput()->withErrors('すでに登録されています。');
         };
 
-        // アニメグループを保存
+        // アニメグループを作成
         AnimeGroup::create([
             'name' => $request->name,
         ]);
@@ -104,7 +104,7 @@ class AnimeGroupController extends Controller
             return back()->withInput()->withErrors('すでに登録されています。');
         };
 
-        // アニメグループを保存
+        // 新しいアニメグループを保存
         AnimeGroup::create([
             'name' => $name,
             'annict_id' => $annict_id

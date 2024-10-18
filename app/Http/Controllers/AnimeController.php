@@ -18,7 +18,7 @@ class AnimeController extends Controller
         $keyword = $request->keyword;
 
         if ($keyword) {
-            // タイトルまたはサブタイトルにキーワードが含まれるアニメを取得し、ページネーションを設定
+            // キーワードがタイトルまたはサブタイトルに含まれるアニメを検索し、ページネーションを適用
             $animes = Anime::where('title', 'like', "%{$keyword}%")
                 ->orWhere('sub_title', 'like', "%{$keyword}%")->paginate(15);
 
