@@ -9,7 +9,6 @@ use App\Models\Anime;
 use App\Models\AnimeGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
 class WatchlistController extends Controller
@@ -60,8 +59,10 @@ class WatchlistController extends Controller
         // ログインしているユーザーの非表示リストを取得
         $localUserHiddenLists = UserHiddenList::whereUserId(Auth::user()->id)->select('anime_group_id')->get();
 
-        // 非表示リストのIDだけを配列に変換
+        // 非表示を初期化
         $userHiddenLists = [];
+
+        // ユーザーが非表示にしたアニメグループIDを取得して、非表示リストに追加する
         foreach ($localUserHiddenLists as $localUserHiddenList) {
             $userHiddenLists[] = $localUserHiddenList->anime_group_id;
         }
