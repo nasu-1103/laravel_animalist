@@ -33,9 +33,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            AnimeSeeder::class,
-            AnimeGroupSeeder::class,
-            WatchListSeeder::class,
+            // AnimeSeeder::class,
+            // AnimeGroupSeeder::class,
+            // WatchListSeeder::class,
         ]);
     }
 }
