@@ -3,7 +3,8 @@
         <form action="{{ route('anime_groups.index') }}" method="GET" class="space-y-4">
             <div class="col-auto flex">
                 <label for="keyword" class="font-semibold text-xl my-auto text-gray-800">アニメグループ</label>
-                <input type="text" name="keyword" class="ml-4 mt-1 block w-96 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base"
+                <input type="text" name="keyword"
+                    class="ml-4 mt-1 block w-96 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base"
                     value="{{ request()->keyword }}">
                 <button type="submit" class="btn btn-outline btn-info ml-3 mt-1">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -21,17 +22,21 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="mr-1 mt-3 mb-4">
                     <a href="{{ route('anime_groups.create') }}" class="btn btn-link text-lg ml-3 mr-3">アニメグループ新規登録</a>
-                    <a href="{{ route('anime_groups.annict_search') }}" class="btn btn-link text-lg ml-3 mr-3">アニメグループ新規登録（Annict）</a>
+                    <a href="{{ route('anime_groups.annict_search') }}"
+                        class="btn btn-link text-lg ml-3 mr-3">アニメグループ新規登録（Annict）</a>
 
+                    {{-- フラッシュメッセージを表示 --}}
                     @session('flash_message')
                         {{ session('flash_message') }}
                     @endsession
 
                     <div class="p-6 text-gray-900 text-center">
+                        {{-- エラーメッセージの表示 --}}
                         @session('error_message')
                             {{ session('error_message') }}
                         @endsession
 
+                        {{-- アニメグループがある場合テーブルを表示する --}}
                         @if ($animeGroups->isNotEmpty())
                             <div
                                 class="relative overflow-x-auto shadow-sm sm:rounded-lg text-gray-300 active:text-gray-200">
@@ -44,17 +49,24 @@
                                             <th scope="col" class="border-slate-300 px-6 py-3 text-center">更新日</th>
                                         </tr>
                                     </thead>
+
                                     <tbody>
+                                        {{-- アニメグループごとの情報を表示するセルを作成 --}}
                                         @foreach ($animeGroups as $animeGroup)
                                             <tr class="bg-white">
                                                 <td class="border border-slate-300 px-6 py-4 text-center">
-                                                    {{ $animeGroup->id }}</td>
-                                                <td class="border border-slate-300 px-6 py-4 text-center">{{ $animeGroup->name }}
+                                                    {{ $animeGroup->id }}
+                                                </td>
+                                                <td class="border border-slate-300 px-6 py-4 text-center">
+                                                    {{ $animeGroup->name }}
                                                 </td>
                                                 <td class="flex border border-slate-300 px-6 py-4 justify-center gap-4">
-                                                    <a href="{{ route('anime_groups.show', $animeGroup) }}" class="btn btn-outline btn-primary">詳細</a>
-                                                    <a href="{{ route('anime_groups.edit', $animeGroup) }}" class="btn btn-outline btn-primary">編集</a>
-                                                    <form action="{{ route('anime_groups.destroy', $animeGroup) }}" method="POST" onsubmit="return confirm('本当に削除してもよろしいですか？');">
+                                                    <a href="{{ route('anime_groups.show', $animeGroup) }}"
+                                                        class="btn btn-outline btn-primary">詳細</a>
+                                                    <a href="{{ route('anime_groups.edit', $animeGroup) }}"
+                                                        class="btn btn-outline btn-primary">編集</a>
+                                                    <form action="{{ route('anime_groups.destroy', $animeGroup) }}"
+                                                        method="POST" onsubmit="return confirm('本当に削除してもよろしいですか？');">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit"
@@ -62,7 +74,8 @@
                                                     </form>
                                                 </td>
                                                 <td class="border border-slate-300 px-6 py-4 text-center">
-                                                    {{ $animeGroup->updated_at }}</td>
+                                                    {{ $animeGroup->updated_at }}
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

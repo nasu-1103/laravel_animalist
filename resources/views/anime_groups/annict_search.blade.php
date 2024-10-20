@@ -22,7 +22,8 @@
 
                         <form action="{{ route('anime_groups.annict_list') }}" method="GET" class="space-y-4">
                             <div class="mb-3 mt-2">
-                                <label for="search_word" class="block text-lg font-medium text-gray-700 ml-4">アニメのタイトル名を入力してください。</label>
+                                <label for="search_word"
+                                    class="block text-lg font-medium text-gray-700 ml-4">アニメのタイトル名を入力してください。</label>
                                 <div class="flex">
                                     <input type="text" name="search_word"
                                         class="ml-4 mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:boder-indigo-500 focus:ring-indigo-500 sm:text-base"
@@ -30,7 +31,7 @@
                                     <input type="number" name="page"
                                         class="ml-4 mt-2 block w-12 rounded-md border-gray-300 shadow-sm focus:boder-indigo-500 focus:ring-indigo-500 sm:text-base"
                                         value="{{ old('page', 1) }}">
-                                    <button type="submit" class="btn btn-outline btn-info ml-3 mt-2">
+                                    <button type="submit" class="btn btn-outline btn-info ml-4 mt-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                             class="size-6">
                                             <path fill-rule="evenodd"
@@ -40,7 +41,8 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="mb-3">
+                            
+                            <div class="mb-3 ml-4">
                                 <a href="{{ route('anime_groups.index') }}" class="btn btn-ghost">&lt; 戻る</a>
                             </div>
                         </form>
