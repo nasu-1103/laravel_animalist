@@ -24,20 +24,16 @@
                             @csrf
                             @method('PATCH')
                             <div class="mb-3 mt-2">
-                                <label for="name" class="block text-lg font-medium text-gray-700 ml-4">タイトル</label>
+                                <label for="name" class="ml-4 block text-lg font-medium text-gray-700">タイトル</label>
                                 <div class="flex">
                                     <input type="text" name="name" value="{{ old('name', $animeGroup->name) }}"
                                         class="ml-4 mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base">
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                                <div class="sm:col-span-2">
-                                    <div class="mb-3 ml-4">
-                                        <a href="{{ route('anime_groups.index') }}" class="btn btn-ghost">&lt; 戻る</a>
-                                        <button type="submit" class="btn btn-outline btn-info ml-2">更新</button>
-                                    </div>
-                                </div>
+                            <div class="mb-3 ml-4">
+                                <a href="{{ route('anime_groups.index') }}" class="btn btn-ghost">&lt; 戻る</a>
+                                <button type="submit" class="btn btn-outline btn-info ml-2">更新</button>
                             </div>
                         </form>
                     </div>
