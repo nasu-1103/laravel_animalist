@@ -14,26 +14,36 @@
                         <form action="{{ route('animes.update', $anime) }}" method="POST" class="space-y-4">
                             @csrf
                             @method('PATCH')
-                            <div class="mb-3">
-                                <label for="title" class="block text-lg font-medium text-gray-700">タイトル</label>
-                                <input type="text" name="title" value="{{ old('title', $anime->title) }}"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base" disabled>
+                            <div class="mb-3 mt-2">
+                                <label for="title" class="ml-4 block text-lg font-medium text-gray-700">タイトル</label>
+                                <div class="flex">
+                                    <input type="text" name="title" value="{{ old('title', $anime->title) }}"
+                                        class="ml-4 mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base"
+                                        disabled>
+                                </div>
                             </div>
-                            <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                                <div class="mb-3">
-                                    <label for="episode" class="block text-lg font-medium text-gray-700">エピソード</label>
+
+                            <div class="mb-3 mt-2">
+                                <label for="episode" class="ml-4 block text-lg font-medium text-gray-700">エピソード</label>
+                                <div class="flex">
                                     <input type="number" name="episode" value="{{ old('episode', $anime->episode) }}"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base" disabled>
+                                        class="ml-4 mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base"
+                                        disabled>
                                 </div>
-                                <div class="sm:col-span-2">
-                                    <div class="mb-3">
-                                        <label for="sub_title"
-                                            class="block text-lg font-medium text-gray-700">サブタイトル</label>
-                                        <textarea name="sub_title" rows="4"
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base" disabled>{{ old('sub_title', $anime->sub_title) }}</textarea>
-                                    </div>
-                                    <a href="{{ route('animes.index') }}" class="btn btn-ghost">&lt; 戻る</a>
+                            </div>
+
+                            <div class="mb-3 mt-2">
+                                <label for="sub_title"
+                                    class="ml-4 block text-lg font-medium text-gray-700">サブタイトル</label>
+                                <div class="flex">
+                                    <textarea name="sub_title" rows="4"
+                                        class="ml-4 mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base"
+                                        disabled>{{ old('sub_title', $anime->sub_title) }}</textarea>
                                 </div>
+                            </div>
+
+                            <div class="mb-3 ml-4">
+                                <a href="{{ route('animes.index') }}" class="btn btn-ghost">&lt; 戻る</a>
                             </div>
                         </form>
                     </div>

@@ -50,7 +50,9 @@
                                             <th scope="col" class="border-slate-300 px-6 py-3 text-center">更新日</th>
                                         </tr>
                                     </thead>
+
                                     <tbody>
+                                        {{-- アニメごとの情報表示するセルを作成 --}}
                                         @foreach ($animes as $anime)
                                             <tr class="bg-white">
                                                 <td class="border border-slate-300 px-6 py-4 text-center">{{ $anime->id }}</td>
