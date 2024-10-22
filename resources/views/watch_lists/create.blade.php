@@ -11,20 +11,11 @@
                 <div class="p-6 text-gray-900">
                     <div class="ml-40">
 
-                        {{-- 入力フォームにエラーが発生した場合、エラーメッセージを表示 --}}
-                        @if ($errors->any())
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        @endif
-
                         <form action="{{ route('watch_list.store') }}" method="POST" class="space-y-4">
                             @csrf
                             <div class="flex">
                                 <label for="anime"
-                                    class="block mb-2 text-lg font-medium text-gray-700 dark:text-white">アニメを選択してください。</label>
+                                    class="mb-2 block text-lg font-medium text-gray-700 dark:text-white">アニメを選択してください。</label>
                                 <label for="note"
                                     class="hidden xl:inline-block xl:ml-2 text-lg font-medium text-red-500 dark:text-white">視聴中の場合、先に時間を入力してから未視聴に変更してください。</label>
                                 <div class="tooltip" data-tip="視聴中の場合、先に時間を入力してから未視聴に変更してください。">
@@ -44,6 +35,7 @@
                                                 @checked(in_array($anime->id, $watch_lists))>{{ $anime->title . '：' . $anime->sub_title }}
                                         </label>
                                     </div>
+
                                     <div>
                                         <select name="status" id="{{ 'status' . $anime->id }}"
                                             class="align-top rounded-xl ml-6" onchange="setStatus({{ $anime->id }})"
@@ -59,7 +51,10 @@
                             @endforeach
                         </form>
                     </div>
-                    <a href="javascript:history.back();" class="mt-2 btn btn-ghost">&lt; 戻る</a>
+
+                    <div class="mb-3 ml-4">
+                        <a href="javascript:history.back();" class="btn btn-ghost">&lt; 戻る</a>
+                    </div>
                 </div>
             </div>
         </div>
