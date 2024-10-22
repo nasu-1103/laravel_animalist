@@ -33,12 +33,14 @@
                         {{ session('error_message') }}
                     @endsession
 
+                    {{-- アニメグループごとにデータを表示 --}}
                     @forelse ($anime_group_lists as $animeGroup)
                         {{-- ウォッチリストのカウントの初期化 --}}
                         @if ($animeGroup->animes->count() > 0)
                             @php
                                 $watch_ListCount = 0;
                             @endphp
+
                             <div class="text-gray-900">
                                 <div class="card bg-base-100 shadow-xl mt-6 text-lg">
                                     <div class="card-body flex">
@@ -60,6 +62,7 @@
                                                 <span class="text-3xl ml-2 mb-2">👑</span>
                                             @endif
                                         </div>
+
                                         <div class="anime_group">
                                             <div
                                                 class="card-actions relative overflow-x-auto shadow-sm sm:rounded-lg text-gray-300 active:text-gray-200">
@@ -71,12 +74,16 @@
                                                         <th class="mt-4 w-16">ステータス</th>
                                                         <th class="mt-4 w-36">エディット</th>
                                                     </tr>
+
+                                                    {{-- アニメグループに含まれる全てのアニメを順番に表示 --}}
                                                     @foreach ($animeGroup->animes as $anime)
                                                         <tr class="text-center">
                                                             <td class="border boder-slate-300 px-6 py-4">
                                                                 {{ $anime->episode . '話' }}</td>
                                                             <td class="border boder-slate-300 px-6 py-4 text-center">
                                                                 {{ $anime->sub_title }}</td>
+
+                                                            {{-- アニメごとのウォッチリストをチェック --}}
                                                             @forelse ($anime->watchlists as $watch_list)
                                                                 {{-- アニメIDとユーザーIDが一致し、かつユーザーが登録したウォッチリストのデータを表示 --}}
                                                                 @if ($anime->id == $watch_list->anime_id && Auth::user()->id == $watch_list->user_id)
@@ -108,7 +115,7 @@
                                                                         </form>
                                                                     </td>
                                                                 @endif
-                                                                {{-- データがなくても空セルを表示 --}}
+                                                            {{-- データがなくても空セルを表示 --}}
                                                             @empty
                                                                 <td class="border border-slate-300 px-6 py-4"></td>
                                                                 <td class="border border-slate-300 px-6 py-4"></td>
@@ -123,6 +130,7 @@
                                 </div>
                             </div>
                         @endif
+                    {{-- データがなければ表示 --}}
                     @empty
                         <p class="text-center">投稿はありません。</p>
                     @endforelse
