@@ -57,8 +57,8 @@
                                 </div>
 
                                 <div class="mb-3 ml-4">
-                                    <a href="{{ route('animes.index') }}" class="btn btn-ghost">&lt; 戻る</a>
-                                    <button type="submit" class="btn btn-outline btn-info ml-2">登録</button>
+                                    <a href="{{ route('animes.index') }}" class="btn btn-ghost mt-1">&lt; 戻る</a>
+                                    <button type="submit" class="btn btn-outline btn-info ml-2 mt-1">登録</button>
                                 </div>
                             </div>
                         </form>
