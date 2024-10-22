@@ -23,7 +23,7 @@
                         <form action="{{ route('anime_groups.annict_list') }}" method="GET" class="space-y-4">
                             <div class="mb-3 mt-2">
                                 <label for="search_word"
-                                    class="block text-lg font-medium text-gray-700 ml-4">アニメのタイトル名を入力してください。</label>
+                                    class="ml-4 block text-lg font-medium text-gray-700">アニメのタイトル名を入力してください。</label>
                                 <div class="flex">
                                     <input type="text" name="search_word"
                                         class="ml-4 mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:boder-indigo-500 focus:ring-indigo-500 sm:text-base"
