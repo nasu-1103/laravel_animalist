@@ -51,7 +51,7 @@
             </label>
         </div>
 
-        {{-- 会員登録リンクの非表示設定 --}}
+        {{-- 会員登録リンクを非表示設定 --}}
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('register'))
                 <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none foucs:ring-offset-2 focus:ring-indigo-500"
@@ -60,6 +60,7 @@
                 </a>
             @endif
 
+            {{-- パスワード再設定リンクを非表示設定 --}}
             @if (Route::has('password.request'))
                 <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ml-3"
                     href="{{ route('password.request') }}">
