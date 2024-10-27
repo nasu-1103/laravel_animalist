@@ -112,7 +112,7 @@ class AnimeController extends Controller
     {
         // バリデーションの設定
         $request->validate([
-            'episode' => ['required', 'string'],
+            'episode' => ['required', 'integer'],
             'anime_id' => ['required'],
         ]);
 
