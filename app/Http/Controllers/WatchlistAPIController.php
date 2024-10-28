@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AnimeGroup;
 use App\Models\User;
 use App\Models\WatchList;
+use App\Http\Controllers\AnimeController;
 use Illuminate\Http\Request;
 
 class WatchlistAPIController extends Controller
@@ -27,6 +29,7 @@ class WatchlistAPIController extends Controller
                 'status' => $request->status,
                 'notes' => $request->notes,
             ]);
+
             // ウォッチリストが作成されたら結果を返す
             return ['result' => 'insert'];
         } else {
@@ -34,6 +37,7 @@ class WatchlistAPIController extends Controller
             WatchList::whereUserId($request->user_id)
                 ->whereAnimeId($request->anime_id)
                 ->delete();
+
             // ウォッチリストが削除されたら結果を返す
             return ['result' => 'delete'];
         }
@@ -51,6 +55,7 @@ class WatchlistAPIController extends Controller
             // メモとユーザー情報を保存
             $user->notes = $request->notes;
             $user->save();
+
             // メモが更新されたら結果を返す
             return ['result' => 'update'];
         } else {
@@ -64,22 +69,36 @@ class WatchlistAPIController extends Controller
         // アニメIDを取得
         $animeId = $request->input('anime_id');
 
+        // アニメグループをIDで検索
+        $animeGroup = AnimeGroup::where('id', $animeId)->first();
+
+        // アニメグループが存在しない場合、エラーメッセージを返す
+        if (!$animeGroup) {
+            return response()->json(['error' => 'アニメグループが見つかりません。']);
+        }
+
+        // AnimeControllerのインスタンスを作成
+        $animeController = new AnimeController();
+
+        // Annict APIからエピソードを取得
+        $apiEpisodeCount = $animeController->annict_episode_count($animeGroup->annict_id);
+
+        // 視聴済みステータスを設定
+        $isWatched = 1;
+
         // アニメIDに関連するウォッチリストのエピソードを全て取得
         $watchlists = WatchList::where('anime_id', $animeId)->get();
 
-        // ウォッチリスト内に、未視聴または視聴中のエピソードがあるかチェック
-        $hasUnwatchedOrWatching = $watchlists->contains(function ($watchlist) {
-            // 視聴済み以外のステータスをチェック
-            return $watchlist->status != 1;
-        });
+        // ウォッチリスト内の視聴済みのエピソード数をカウントする
+        $watchedCount = $watchlists->where('status', $isWatched)->count();
 
         // 👑を表示する条件を設定
-        if ($hasUnwatchedOrWatching) {
-            // 未視聴または視聴中のエピソードがある場合、👑は非表示
-            return response()->json(['👑' => false]);
-        } else {
+        if ($watchedCount >= $apiEpisodeCount && $apiEpisodeCount > 0) {
             // 全てのエピソードが視聴済みの場合、👑を表示
             return response()->json(['👑' => true]);
+        } else {
+            // 未視聴または視聴中のエピソードがある場合、👑は非表示
+            return response()->json(['👑' => false]);
         }
     }
 }

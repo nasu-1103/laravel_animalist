@@ -36,11 +36,6 @@ class AnimeController extends Controller
         return view('animes.index', compact('animes', 'total_count', 'keyword'));
     }
 
-    public function create()
-    {
-        return view('animes.create');
-    }
-
     public function annict_search()
     {
         // Annict IDが存在するアニメグループを取得
@@ -78,6 +73,55 @@ class AnimeController extends Controller
         return view('animes.annict_list', compact('episodes', 'count', 'anime_id'));
     }
 
+    public function annict_store(Request $request)
+    {
+        // バリデーションの設定
+        $request->validate([
+            'episode' => ['required', 'string'],
+            'anime_id' => ['required'],
+        ]);
+
+        // エピソード番号とサブタイトルを分割
+        [$number, $subTitle] = explode(",", $request->episode);
+
+        // 同じアニメグループID、エピソード番号、サブタイトルが既に存在する場合はエラーを返す
+        if (
+            Anime::whereAnimeGroupId($request->anime_id)
+            ->whereSubTitle($subTitle)
+            ->whereEpisode($number)->get()->count() >= 1
+        ) {
+
+            return back()->withInput()->withErrors('すでに登録されています。');
+        };
+
+        // 新しいアニメのエピソードのデータを作成
+        Anime::create([
+            'anime_group_id' => $request->anime_id,
+            'title' => AnimeGroup::whereId($request->anime_id)->first()->name,
+            'episode' => $number,
+            'sub_title' => $subTitle,
+        ]);
+
+        return redirect()->route('animes.index')->with('flash_message', '登録が完了しました。');
+    }
+
+    public function annict_episode_count($annictId, $page = 1)
+    {
+        // Annict APIからエピソードの総数を取得
+        $token = env('ANNICT_TOKEN');
+        $url = "https://api.annict.com/v1/episodes?filter_work_id=" . $annictId . "&sort_sort_number=asc&page=" . $page;
+        $res = Http::withToken($token)->get($url);
+
+        // エピソードの総数を返す
+        return $res->json()['total_count'];
+    }
+
+    public function create()
+    {
+        return view('animes.create');
+    }
+
+
     public function store(Request $request)
     {
         // バリデーションの設定
@@ -108,46 +152,9 @@ class AnimeController extends Controller
         return redirect()->route('animes.index')->with('flash_message', '登録が完了しました。');
     }
 
-    public function annict_store(Request $request)
+    public function show(Anime $anime)
     {
-        // バリデーションの設定
-        $request->validate([
-            'episode' => ['required', 'integer'],
-            'anime_id' => ['required'],
-        ]);
-
-        // エピソード番号とサブタイトルを分割
-        [$number, $subTitle] = explode(",", $request->episode);
-
-        // 同じアニメグループID、エピソード番号、サブタイトルが既に存在する場合はエラーを返す
-        if (
-            Anime::whereAnimeGroupId($request->anime_id)
-            ->whereSubTitle($subTitle)
-            ->whereEpisode($number)->get()->count() >= 1
-        ) {
-
-            return back()->withInput()->withErrors('すでに登録されています。');
-        };
-
-        // 新しいアニメのエピソードのデータを作成
-        Anime::create([
-            'anime_group_id' => $request->anime_id,
-            'title' => AnimeGroup::whereId($request->anime_id)->first()->name,
-            'episode' => $number,
-            'sub_title' => $subTitle,
-        ]);
-
-        return redirect()->route('animes.index')->with('flash_message', '登録が完了しました。');
-    }
-
-    public function edit(Anime $anime)
-    {
-        // 管理者以外のアクセスを制限
-        if (Gate::denies('admin')) {
-            return redirect()->route('animes.index')->with('error_message', '不正なアクセスです。');
-        }
-
-        return view('animes.edit', compact('anime'));
+        return view('animes.show', compact('anime'));
     }
 
     public function update(Request $request, Anime $anime)
@@ -184,9 +191,14 @@ class AnimeController extends Controller
         return redirect()->route('animes.index', $anime)->with('flash_message', '登録を編集しました。');
     }
 
-    public function show(Anime $anime)
+    public function edit(Anime $anime)
     {
-        return view('animes.show', compact('anime'));
+        // 管理者以外のアクセスを制限
+        if (Gate::denies('admin')) {
+            return redirect()->route('animes.index')->with('error_message', '不正なアクセスです。');
+        }
+
+        return view('animes.edit', compact('anime'));
     }
 
     public function destroy(Anime $anime)
