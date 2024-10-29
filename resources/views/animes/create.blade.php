@@ -29,7 +29,7 @@
                                     <select name="animeGroup"
                                         class="ml-4 mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base">
                                         {{-- 全てのアニメのタイトルを表示 --}}
-                                        @foreach (\App\Models\animeGroup::all() as $animeGroup)
+                                        @foreach (\App\Models\AnimeGroup::all() as $animeGroup)
                                             {{-- アニメのタイトルを表示 --}}
                                             <option value="{{ $animeGroup->id }}">{{ $animeGroup->name }}</option>
                                         @endforeach
@@ -50,9 +50,7 @@
                                         class="ml-4 block text-lg font-medium text-gray-700">サブタイトル</label>
                                     <div class="flex">
                                         <textarea name="sub_title" rows="4"
-                                            class="ml-4 mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base">
-                                            {{ old('sub_title') }}
-                                        </textarea>
+                                            class="ml-4 mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base">{{ old('sub_title') }}</textarea>
                                     </div>
                                 </div>
 
