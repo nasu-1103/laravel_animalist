@@ -57,8 +57,8 @@
                                                     @endphp
                                                 @endforeach
                                             @endforeach
-                                            {{-- 全てのアニメが視聴済みの場合、👑を表示 --}}
-                                            @if ($watch_ListCount === $animeGroup->animes_count && $watch_ListCount !== 0)
+                                            {{-- 全てのエピソードが視聴済みの場合、👑を表示 --}}
+                                            @if ($animeGroup->watched_count === $animeGroup->total_episodes)
                                                 <span class="text-3xl ml-2 mb-2">👑</span>
                                             @endif
                                         </div>
@@ -115,7 +115,7 @@
                                                                         </form>
                                                                     </td>
                                                                 @endif
-                                                            {{-- データがなくても空セルを表示 --}}
+                                                                {{-- データがなくても空セルを表示 --}}
                                                             @empty
                                                                 <td class="border border-slate-300 px-6 py-4"></td>
                                                                 <td class="border border-slate-300 px-6 py-4"></td>
@@ -130,7 +130,7 @@
                                 </div>
                             </div>
                         @endif
-                    {{-- データがなければ表示 --}}
+                        {{-- データがなければ表示 --}}
                     @empty
                         <p class="text-center">投稿はありません。</p>
                     @endforelse

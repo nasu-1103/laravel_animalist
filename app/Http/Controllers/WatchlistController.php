@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\AnimeController;
 use App\Models\UserHiddenList;
 use App\Models\WatchList;
 use App\Models\Anime;
@@ -48,6 +49,23 @@ class WatchlistController extends Controller
             ->orderBy('created_at', 'desc') // 作成日時の降順で並び替え
             ->paginate(15); // ページネーションの設定（1ページあたり15件）
 
+        $animeController = new AnimeController();
+        foreach ($anime_group_lists as $animeGroup) {
+            // annict_idが存在する場合のみエピソード数を取得
+            if ($animeGroup->annict_id) {
+                $animeGroup->total_episodes = $animeController->annict_episode_count($animeGroup->annict_id);
+            } else {
+                $animeGroup->total_episodes = 0;
+            }
+
+            // 視聴済みのカウント
+            $animeGroup->watched_count = 0;
+            foreach ($animeGroup->animes as $anime) {
+                // ステータスが1のウォッチリストをカウント
+                $animeGroup->watched_count += $anime->watchlists->where('status', 1)->count();
+            }
+        }
+
         return view('watch_lists.index', ['anime_group_lists' => $anime_group_lists]);
     }
 
@@ -59,7 +77,7 @@ class WatchlistController extends Controller
         // ログインしているユーザーの非表示リストを取得
         $localUserHiddenLists = UserHiddenList::whereUserId(Auth::user()->id)->select('anime_group_id')->get();
 
-        // 非表示を初期化
+        // 非表示リストを初期化
         $userHiddenLists = [];
 
         // ユーザーが非表示にしたアニメグループIDを取得して、非表示リストに追加する
