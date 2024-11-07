@@ -50,19 +50,19 @@ class WatchlistController extends Controller
             ->paginate(15); // ページネーションの設定（1ページあたり15件）
 
         $animeController = new AnimeController();
-        foreach ($anime_group_lists as $animeGroup) {
+        foreach ($anime_group_lists as $anime_group_list) {
             // annict_idが存在する場合のみエピソード数を取得
-            if ($animeGroup->annict_id) {
-                $animeGroup->total_episodes = $animeController->annict_episode_count($animeGroup->annict_id);
+            if ($anime_group_list->annict_id) {
+                $anime_group_list->total_episodes = $animeController->annict_episode_count($anime_group_list->annict_id);
             } else {
-                $animeGroup->total_episodes = 0;
+                $anime_group_list->total_episodes = 0;
             }
 
             // 視聴済みのカウント
-            $animeGroup->watched_count = 0;
-            foreach ($animeGroup->animes as $anime) {
+            $anime_group_list->watched_count = 0;
+            foreach ($anime_group_list->animes as $anime) {
                 // ステータスが1のウォッチリストをカウント
-                $animeGroup->watched_count += $anime->watchlists->where('status', 1)->count();
+                $anime_group_list->watched_count += $anime->watchlists->where('status', 1)->count();
             }
         }
 
