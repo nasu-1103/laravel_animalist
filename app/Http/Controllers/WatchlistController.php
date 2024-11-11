@@ -45,7 +45,10 @@ class WatchlistController extends Controller
         )
             ->withCount('animes') // 各アニメグループのアニメ数をカウント
             ->whereIn('id', $animeGroupIds) // 検索キーワードに一致するアニメグループのみ選択
-            ->doesntHave('hiddenLists') // 非表示リストに含まれないアニメグループのみ表示
+            ->whereDoesntHave('hiddenLists', function ($query) {
+                // ログイン中のユーザーが非表示に設定していないリストを取得
+                $query->where('user_id', Auth::id());
+            })
             ->orderBy('created_at', 'desc') // 作成日時の降順で並び替え
             ->paginate(15); // ページネーションの設定（1ページあたり15件）
 
