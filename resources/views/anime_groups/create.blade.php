@@ -15,7 +15,7 @@
                         @if ($errors->any())
                             <ul class="ml-4">
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    <li class="font-medium text-red-500">{{ $error }}</li>
                                 @endforeach
                             </ul>
                         @endif
