@@ -111,13 +111,6 @@ class WatchlistController extends Controller
 
     public function store(Request $request)
     {
-        // バリデーションのエラーメッセージを設定
-        $request->validate([
-            'anime_check_lists' => 'required',
-        ], [
-            'anime_check_lists.required' => 'アニメチェックリストを選択してください。'
-        ]);
-
         // チェックされたアニメをウォッチリストに登録
         foreach ($request->anime_check_lists as $anime_check_list) {
             // 既にウォッチリストに登録されている場合はエラーをスローしてメッセージを表示
