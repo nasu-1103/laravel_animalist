@@ -115,7 +115,7 @@
                                                                         </form>
                                                                     </td>
                                                                 @endif
-                                                                {{-- データがなくても空セルを表示 --}}
+                                                            {{-- データがなくても空セルを表示 --}}
                                                             @empty
                                                                 <td class="border border-slate-300 px-6 py-4"></td>
                                                                 <td class="border border-slate-300 px-6 py-4"></td>
