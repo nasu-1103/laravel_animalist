@@ -130,7 +130,7 @@
                                 </div>
                             </div>
                         @endif
-                        {{-- データがなければ表示 --}}
+                    {{-- データがなければ表示 --}}
                     @empty
                         <p class="text-center">投稿はありません。</p>
                     @endforelse
