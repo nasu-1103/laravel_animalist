@@ -6,7 +6,6 @@ use App\Models\AnimeGroup;
 use App\Models\UserHiddenList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 
 class AnimeGroupController extends Controller
@@ -115,9 +114,7 @@ class AnimeGroupController extends Controller
     public function edit(AnimeGroup $animeGroup)
     {
         // 管理者以外のアクセスを制限
-        if (Gate::denies('admin')) {
-            return redirect()->route('anime_groups.index')->with('error_message', '不正なアクセスです。');
-        }
+        $this->authorizeAdmin();
 
         return view('anime_groups.edit', compact('animeGroup'));
     }
@@ -125,9 +122,7 @@ class AnimeGroupController extends Controller
     public function update(Request $request, AnimeGroup $animeGroup)
     {
         // 管理者以外のアクセスを制限
-        if (Gate::denies('admin')) {
-            return redirect()->route('anime_groups.index')->with('error_message', '不正なアクセスです。');
-        }
+        $this->authorizeAdmin();
 
         // バリデーションの設定
         $request->validate([
@@ -172,9 +167,7 @@ class AnimeGroupController extends Controller
     public function destroy(AnimeGroup $animeGroup)
     {
         // 管理者以外のアクセスを制限
-        if (Gate::denies('admin')) {
-            return redirect()->route('anime_groups.index')->with('error_message', '不正なアクセスです。');
-        }
+        $this->authorizeAdmin();
 
         $animeGroup->delete();
 

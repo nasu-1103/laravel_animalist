@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Anime;
 use App\Models\AnimeGroup;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 
 class AnimeController extends Controller
@@ -111,7 +110,7 @@ class AnimeController extends Controller
         $token = env('ANNICT_TOKEN');
         $url = "https://api.annict.com/v1/episodes?filter_work_id=" . $annictId . "&sort_sort_number=asc&page=" . $page;
         $res = Http::withToken($token)->get($url);
-
+        
         // 総エピソード数を取得
         $totalCount = $res->json()['total_count'];
 
@@ -162,10 +161,8 @@ class AnimeController extends Controller
 
     public function update(Request $request, Anime $anime)
     {
-        // // 管理者以外のアクセスを制限
-        if (Gate::denies('admin')) {
-            return redirect()->route('animes.index')->with('error_message', '不正なアクセスです。');
-        }
+        // 管理者以外のアクセスを制限
+        $this->authorizeAdmin();
 
         // バリデーションの設定
         $request->validate([
@@ -197,9 +194,7 @@ class AnimeController extends Controller
     public function edit(Anime $anime)
     {
         // 管理者以外のアクセスを制限
-        if (Gate::denies('admin')) {
-            return redirect()->route('animes.index')->with('error_message', '不正なアクセスです。');
-        }
+        $this->authorizeAdmin();
 
         return view('animes.edit', compact('anime'));
     }
@@ -207,9 +202,7 @@ class AnimeController extends Controller
     public function destroy(Anime $anime)
     {
         // 管理者以外のアクセスを制限
-        if (Gate::denies('admin')) {
-            return redirect()->route('animes.index')->with('error_message', '不正なアクセスです。');
-        }
+        $this->authorizeAdmin();
 
         $anime->delete();
 
