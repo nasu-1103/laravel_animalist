@@ -54,7 +54,7 @@ class AnimeController extends Controller
         $anime_id = AnimeGroup::whereAnnictId($request->annict_id)->first()->id;
         $token = env('ANNICT_TOKEN');
         $url = "https://api.annict.com/v1/episodes?filter_work_id=" .
-            $request->annict_id . "&sort_sort_number=asc&page=" . $request->page;
+        $request->annict_id . "&sort_sort_number=asc&per_page=50&page=" . $request->page;
         $res = Http::withToken($token)->get($url);
 
         // エピソードデータを取得

@@ -55,7 +55,7 @@ class AnimeGroupController extends Controller
         // Annict APIからアニメデータを取得
         $token = env('ANNICT_TOKEN');
         $url = "https://api.annict.com/v1/works?filter_title=" .
-            $request->search_word . "&sort_season=asc&page=" . $request->page;
+        $request->search_word . "&sort_season=asc&per_page=50&page=" . $request->page;
         $res = Http::withToken($token)->get($url);
 
         // Annict APIからアニメのタイトルを取得
