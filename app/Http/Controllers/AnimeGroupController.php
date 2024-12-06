@@ -147,7 +147,7 @@ class AnimeGroupController extends Controller
         if ($animeGroup->annict_id) {
             $token = env('ANNICT_TOKEN');
             $url = "https://api.annict.com/v1/episodes?filter_work_id=" .
-                $animeGroup->annict_id . "&sort_sort_number=asc&page=1";
+            $animeGroup->annict_id . "&sort_sort_number=asc&per_page=50&page=" . $request->page;
             $res = Http::withToken($token)->get($url);
             $episodes = $res->json()['episodes'];
 
