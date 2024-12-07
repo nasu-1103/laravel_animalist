@@ -41,8 +41,6 @@ class WatchlistAPIController extends Controller
             // ウォッチリストが削除されたら結果を返す
             return ['result' => 'delete'];
         }
-        // エラーが発生したらエラーを返す
-        return ['result' => 'error'];
     }
 
     public function setNotes(Request $request)
