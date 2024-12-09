@@ -12,8 +12,11 @@ class WatchlistAPIController extends Controller
 {
     public function setStatus(Request $request)
     {
-        // ステータスが1または2の場合
-        if ($request->status === "1" || $request->status === "2") {
+        $watchedStatus = "1"; // 視聴済み
+        $unwatchedStatus = "2"; // 未視聴
+
+        // ステータスが視聴済みまたは未視聴の場合
+        if ($request->status === $watchedStatus || $request->status === $unwatchedStatus) {
             // 指定されたユーザーIDとアニメIDが一致するウォッチリストを取得
             $watchLists = WatchList::whereUserId($request->user_id)->whereAnimeId($request->anime_id)->get();
 
