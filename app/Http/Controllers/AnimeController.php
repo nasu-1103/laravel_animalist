@@ -54,7 +54,7 @@ class AnimeController extends Controller
         $anime_id = AnimeGroup::whereAnnictId($request->annict_id)->first()->id;
         $token = env('ANNICT_TOKEN');
         $url = "https://api.annict.com/v1/episodes?filter_work_id=" .
-        $request->annict_id . "&sort_sort_number=asc&per_page=50&page=" . $request->page;
+            $request->annict_id . "&sort_sort_number=asc&per_page=50&page=" . $request->page;
         $res = Http::withToken($token)->get($url);
 
         // エピソードデータを取得
@@ -72,6 +72,33 @@ class AnimeController extends Controller
         return view('animes.annict_list', compact('episodes', 'count', 'anime_id'));
     }
 
+    /**
+     * 指定されたアニメグループIDとエピソード番号のデータが存在する場合、その情報を確認する
+     * 
+     * @param string|int $episodeNumber エピソード番号（文字列または整数）
+     * @param int $animeGroupId アニメグループID
+     * @return bool 指定された組み合わせが存在する場合は true、それ以外は false
+     */
+    public function episode_exists(string|int $episodeNumber, int $animeGroupId): bool
+    {
+        // エピソード番号が文字列の場合、整数に変換
+        if (!is_int($episodeNumber)) {
+            $episodeNumber = (int) $episodeNumber;
+        }
+
+        // アニメグループIDが文字列の場合、整数に変換
+        if (!is_int($animeGroupId)) {
+            $animeGroupId = (int) $animeGroupId;
+        }
+
+        // 指定されたエピソード番号とアニメグループIDで存在確認
+        $exists = Anime::where('anime_group_id', $animeGroupId)
+            ->where('episode', $episodeNumber)
+            ->exists();
+
+        return $exists;
+    }
+
     public function annict_store(Request $request)
     {
         // バリデーションの設定
@@ -83,15 +110,13 @@ class AnimeController extends Controller
         // エピソード番号とサブタイトルを分割
         [$number, $subTitle] = explode(",", $request->episode);
 
-        // 同じアニメグループID、エピソード番号、サブタイトルが既に存在する場合はエラーを返す
-        if (
-            Anime::whereAnimeGroupId($request->anime_id)
-            ->whereSubTitle($subTitle)
-            ->whereEpisode($number)->get()->count() >= 1
-        ) {
+        // エピソードが既に登録されているか確認
+        $exists = $this->episode_exists($number, $request->anime_id);
 
+        // 登録済みの場合はエラーメッセージを表示して戻る
+        if ($exists) {
             return back()->withInput()->withErrors('すでに登録されています。');
-        };
+        }
 
         // 新しいアニメのエピソードのデータを作成
         Anime::create([
@@ -110,7 +135,7 @@ class AnimeController extends Controller
         $token = env('ANNICT_TOKEN');
         $url = "https://api.annict.com/v1/episodes?filter_work_id=" . $annictId . "&sort_sort_number=asc&page=" . $page;
         $res = Http::withToken($token)->get($url);
-        
+
         // 総エピソード数を取得
         $totalCount = $res->json()['total_count'];
 
@@ -133,15 +158,13 @@ class AnimeController extends Controller
             'animeGroup' => ['required', 'integer'],
         ]);
 
-        // 同じアニメグループID、エピソードが存在する場合はエラーを返す
-        if (
-            Anime::whereAnimeGroupId($request->animeGroup)
-            ->whereEpisode($request->episode)
-            ->get()->count() >= 1
-        ) {
+        // 指定されたエピソードが存在するか確認
+        $exists = $this->episode_exists($request->episode, $request->animeGroup);
 
+        // 登録済みの場合はエラーメッセージを表示して戻る
+        if ($exists) {
             return back()->withInput()->withErrors('すでに登録されています。');
-        };
+        }
 
         // 新しいアニメのデータを保存
         $anime = new Anime();
