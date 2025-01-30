@@ -21,9 +21,6 @@
 
 <br>
 
-## 仕様制限
-- 全50話以下の作品に対応
-
 ## 認証機能
 - ログイン機能
 - ログアウト機能
@@ -33,9 +30,16 @@
 
 <br>
 
+## 仕様制限
+- 全50話以下の作品に対応
+
+<br>
+
 # ⭐ 使用技術
 ## 開発環境
 - VSCode
+- Git
+- Github
 - XAMPP
 - HTTPie
 - Herd
@@ -64,10 +68,15 @@
 ## インフラ
 - さくらVPS
 
+## その他仕様ツール
+- Googleスライド
+- GitMind
+- draw.io
+
 <br>
 
-# ⭐機能詳細
-## [animalist ドキュメント](https://docs.google.com/presentation/d/1xsEN9aFv0fYncOCDhC1Gy6SmspJ03INYSt6ZaljtzrY/edit?usp=sharing)
+# ⭐インフラ構成図
+![インフラ構成図](assets/インフラ構成図.png "インフラ構成図")
 
 <br>
 
@@ -76,8 +85,8 @@
 
 <br>
 
-# ⭐インフラ構成図
-![インフラ構成図](assets/インフラ構成図.png "インフラ構成図")
+# ⭐機能詳細
+## [animalist ドキュメント](https://docs.google.com/presentation/d/1xsEN9aFv0fYncOCDhC1Gy6SmspJ03INYSt6ZaljtzrY/edit?usp=sharing)
 
 <br>
 
