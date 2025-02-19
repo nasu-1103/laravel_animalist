@@ -133,9 +133,7 @@ class WatchlistController extends Controller
     public function edit(WatchList $watch_list)
     {
         // ログイン中のユーザーでない場合、リダイレクト
-        if ($watch_list->user_id !== Auth::id()) {
-            return redirect()->route('watch_list.index')->with('error_message', '不正なアクセスです。');
-        }
+        $this->authorizeUser($watch_list);
 
         $animes = Anime::all();
 
@@ -145,9 +143,7 @@ class WatchlistController extends Controller
     public function update(Request $request, Watchlist $watch_list)
     {
         // ログイン中のユーザーでない場合、リダイレクト
-        if ($watch_list->user_id !== Auth::id()) {
-            return redirect()->route('watch_list.index')->with('error_message', '不正なアクセスです。');
-        }
+        $this->authorizeUser($watch_list);
 
         // バリデーションの設定
         $request->validate([
@@ -169,9 +165,7 @@ class WatchlistController extends Controller
     public function destroy(Watchlist $watch_list)
     {
         // ログイン中のユーザーでない場合、リダイレクト
-        if ($watch_list->user_id !== Auth::id()) {
-            return redirect()->route('watch_list.index')->with('error_message', '不正なアクセスです。');
-        }
+        $this->authorizeUser($watch_list);
 
         $watch_list->delete();
 
