@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Http;
 
 class AnimeController extends Controller
 {
+    // エピソード情報を取得するAnnict APIのURL
+    private const ANNICT_API_BASE_URL = 'https://api.annict.com/v1/episodes';
+
     public function index(Request $request)
     {
         // 検索キーワードを取得
@@ -53,7 +56,7 @@ class AnimeController extends Controller
         // Annict APIからエピソードを取得
         $anime_id = AnimeGroup::whereAnnictId($request->annict_id)->first()->id;
         $token = env('ANNICT_TOKEN');
-        $url = "https://api.annict.com/v1/episodes?filter_work_id=" .
+        $url = self::ANNICT_API_BASE_URL . "?filter_work_id=" .
             $request->annict_id . "&sort_sort_number=asc&per_page=50&page=" . $request->page;
         $res = Http::withToken($token)->get($url);
 
@@ -74,7 +77,7 @@ class AnimeController extends Controller
 
     /**
      * 指定されたアニメグループIDとエピソード番号のデータが存在する場合、その情報を確認する
-     * 
+     *
      * @param string|int $episodeNumber エピソード番号（文字列または整数）
      * @param int $animeGroupId アニメグループID
      * @return bool 指定された組み合わせが存在する場合は true、それ以外は false
@@ -133,7 +136,8 @@ class AnimeController extends Controller
     {
         // Annict APIからエピソードの総数を取得
         $token = env('ANNICT_TOKEN');
-        $url = "https://api.annict.com/v1/episodes?filter_work_id=" . $annictId . "&sort_sort_number=asc&page=" . $page;
+        $url = self::ANNICT_API_BASE_URL . "?filter_work_id=" .
+            $annictId . "&sort_sort_number=asc&per_page=50&page=" . $page;
         $res = Http::withToken($token)->get($url);
 
         // 総エピソード数を取得
